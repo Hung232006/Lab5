@@ -1,0 +1,38 @@
+\begin{tikzpicture}[
+  proc/.style={draw, circle, fill=penilight, draw=peniblue, minimum size=2.2cm, align=center, font=\scriptsize},
+  store/.style={draw, rectangle, minimum width=3.2cm, minimum height=0.8cm, align=center, font=\scriptsize,
+    path picture={\draw (path picture bounding box.north west) -- (path picture bounding box.north east);
+                  \draw (path picture bounding box.south west) -- (path picture bounding box.south east);}},
+  ext/.style={draw, rectangle, minimum width=2.4cm, minimum height=0.9cm, align=center, font=\scriptsize},
+  >=Stealth, thick
+]
+% --- Boundary / Interface Nodes (Level 1 Parent Context) ---
+\node[store] (d3) at (-6.5, 0) {D3: Medical records\\(Level 1 Store)};
+\node[ext] (bs) at (7.5, 0) {Doctor\\(External Entity)};
+
+% --- Level 2 Sub-processes (Decomposition of Process 5.0) ---
+\node[proc] (p51) at (-1.8, 2.3) {5.1\\Look up patient\\allergy list};
+\node[proc] (p52) at (-1.8, -2.3) {5.2\\Look up drug\\interaction catalog};
+\node[proc] (p53) at (3.0, 0) {5.3\\Match \& generate\\safety warning};
+
+% --- Secondary Data Stores (Internal to Process 5.0) ---
+\node[store] (d4) at (-1.8, 4.4) {D4: Allergy List};
+\node[store] (d5) at (-1.8, -4.4) {D5: Interaction Catalog};
+\node[store] (d6) at (3.0, -3.2) {D6: Warning Log};
+
+% --- Inflows from Level 1 Boundary (D3) ---
+\draw[->] (d3) to[out=40, in=180] node[above, sloped, font=\tiny]{Prescription \& patient ID} (p51);
+\draw[->] (d3) to[out=-40, in=180] node[below, sloped, font=\tiny]{Prescribed drug items} (p52);
+
+% --- Store Access Operations ---
+\draw[->] (d4) -- node[right, font=\tiny]{Known allergens (Read)} (p51);
+\draw[->] (d5) -- node[right, font=\tiny]{Interaction rules (Read)} (p52);
+\draw[->] (p53) -- node[right, font=\tiny]{Audit entry (Write)} (d6);
+
+% --- Internal Sub-process Data Flows ---
+\draw[->] (p51) to[out=0, in=135] node[above, sloped, font=\tiny]{Allergy conflicts} (p53);
+\draw[->] (p52) to[out=0, in=-135] node[below, sloped, font=\tiny]{Interaction conflicts} (p53);
+
+% --- Outflow to Level 1 Boundary (Doctor) ---
+\draw[->] (p53) -- node[above, font=\tiny]{Drug safety warning} (bs);
+\end{tikzpicture}

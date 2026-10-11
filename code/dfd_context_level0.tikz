@@ -1,0 +1,20 @@
+\begin{tikzpicture}[
+  proc/.style={draw, circle, fill=penilight, draw=peniblue, minimum size=3.0cm, align=center, font=\small},
+  ext/.style={draw, rectangle, minimum width=2.6cm, minimum height=1.0cm, align=center, font=\small},
+  >=Stealth, thick
+]
+\node[proc] (sys) at (0,0) {0\\MedBook\\System};
+\node[ext] (bn) at (-6,3) {Patient};
+\node[ext] (bs) at (6,3) {Doctor};
+\node[ext] (lt) at (-6,-3) {Receptionist};
+\node[ext] (bh) at (6,-3) {Insurance\\partner};
+
+\draw[->] (bn) -- node[above, sloped, font=\scriptsize]{Book/cancel request} (sys);
+\draw[->] (sys) -- node[below, sloped, font=\scriptsize]{Confirmation/reminder} (bn);
+\draw[->] (bs) -- node[above, sloped, font=\scriptsize]{Visit results, prescription} (sys);
+\draw[->] (sys) -- node[below, sloped, font=\scriptsize]{Medical history, warnings} (bs);
+\draw[->] (lt) -- node[above, sloped, font=\scriptsize]{Confirm appointment} (sys);
+\draw[->] (sys) -- node[below, sloped, font=\scriptsize]{Pending-confirmation list} (lt);
+\draw[->] (sys) -- node[above, sloped, font=\scriptsize]{Insurance verification request} (bh);
+\draw[->] (bh) -- node[below, sloped, font=\scriptsize]{Coverage verification result} (sys);
+\end{tikzpicture}

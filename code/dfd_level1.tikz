@@ -1,0 +1,31 @@
+\begin{tikzpicture}[
+  proc/.style={draw, circle, fill=penilight, draw=peniblue, minimum size=2.1cm, align=center, font=\scriptsize},
+  store/.style={draw, rectangle, minimum width=3.0cm, minimum height=0.8cm, align=center, font=\scriptsize,
+    path picture={\draw (path picture bounding box.north west) -- (path picture bounding box.north east);
+                  \draw (path picture bounding box.south west) -- (path picture bounding box.south east);}},
+  ext/.style={draw, rectangle, minimum width=2.2cm, minimum height=0.9cm, align=center, font=\scriptsize},
+  >=Stealth, thick
+]
+\node[ext] (bn) at (-6,2) {Patient};
+\node[proc] (p1) at (-2,2) {1.0\\Search\\doctors};
+\node[proc] (p2) at (2,2) {2.0\\Book\\appointment};
+\node[proc] (p3) at (6,2) {3.0\\Confirm \&\\remind};
+\node[proc] (p4) at (2,-2) {4.0\\Record\\visit};
+\node[proc] (p5) at (6,-2) {5.0\\Drug safety\\warning};
+\node[store] (d1) at (-2,-1) {D1: Doctors};
+\node[store] (d2) at (2,0) {D2: Appointments};
+\node[store] (d3) at (6,0) {D3: Medical records};
+\node[ext] (bs) at (-2,-3.3) {Doctor};
+
+\draw[->] (bn) -- node[above, font=\tiny]{Search criteria} (p1);
+\draw[->] (p1) -- node[right, font=\tiny]{Doctor query} (d1);
+\draw[->] (p1) -- node[above, font=\tiny]{Selected doctor} (p2);
+\draw[->] (p2) -- node[right, font=\tiny]{Save booking} (d2);
+\draw[->] (d2) -- node[right, font=\tiny]{Appt status} (p3);
+\draw[->] (p3) to[out=135, in=45] node[above, font=\tiny]{Confirmation / reminder} (bn);
+\draw[->] (bs) -- node[above, sloped, font=\tiny]{Diagnosis \& Rx} (p4);
+\draw[->] (p4) -- node[above, sloped, font=\tiny]{Save record} (d3);
+\draw[->] (d3) -- node[right, font=\tiny]{Prescription \& history} (p5);
+\draw[->] (p5) to[out=-150, in=-30] node[below, sloped, font=\tiny]{Drug safety warning} (bs);
+\draw[->] (p2) -- node[above, sloped, font=\tiny]{Check schedule} (d1);
+\end{tikzpicture}

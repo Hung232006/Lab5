@@ -1,0 +1,19 @@
+\begin{tikzpicture}[
+  state/.style={draw, rounded corners, fill=penilight, draw=peniblue,
+    minimum width=3.0cm, minimum height=0.9cm, align=center, font=\small},
+  >=Stealth, thick
+]
+\node[state] (init) at (0,0) {Pending confirmation\\(pending\_confirmation)};
+\node[state] (confirmed) at (5,0) {Confirmed\\(confirmed)};
+\node[state] (done) at (10,0) {Completed\\(completed)};
+\node[state] (cancel) at (5,-3) {Cancelled\\(cancelled)};
+\node[state] (noshow) at (10,-3) {No-show\\(no\_show)};
+\node[draw, circle, fill=black, inner sep=2pt] (start) at (-2.2,0) {};
+
+\draw[->] (start) -- (init);
+\draw[->] (init) -- node[above, font=\scriptsize]{Receptionist confirms (UC-05)} (confirmed);
+\draw[->] (confirmed) -- node[above, font=\scriptsize]{Doctor completes visit (UC-07)} (done);
+\draw[->] (init) -- node[left, font=\scriptsize]{Patient cancels $>$2h before (UC-04)} (cancel);
+\draw[->] (confirmed) -- node[right, font=\scriptsize]{Patient cancels $>$2h before (UC-04)} (cancel);
+\draw[->] (confirmed) -- node[right, font=\scriptsize]{Time passed, patient did not arrive} (noshow);
+\end{tikzpicture}
